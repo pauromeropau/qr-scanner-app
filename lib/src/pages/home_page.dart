@@ -1,10 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import 'package:qr_scanner_app/src/bloc/scans_bloc.dart';
+import 'package:qr_scanner_app/src/model/scan_model.dart';
 import 'package:qr_scanner_app/src/pages/mapas_page.dart';
+import 'package:qr_scanner_app/src/pages/direcciones_page.dart';
 
 import 'package:barcode_scan/barcode_scan.dart';
-
-import 'direcciones_page.dart';
+import 'package:qr_scanner_app/utils/utils.dart' as utils;
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +16,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final scansBloc = new ScansBloc();
   @override
   int currentIndex = 0;
   Widget build(BuildContext context) {
@@ -19,22 +24,28 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('QR Scanner'),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.delete), onPressed: () {})
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: scansBloc.borrarScanTODOS,
+          )
         ],
       ),
       body: _callPage(currentIndex),
       bottomNavigationBar: _crearBottomNavigationBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.filter_center_focus),
-        onPressed: _scanQR,
+        child: Icon(
+          Icons.filter_center_focus,
+          size: 40,
+        ),
+        onPressed: () => _scanQR(context),
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
 
-  _scanQR() async {
-    String futureString = '';
+  _scanQR(BuildContext context) async {
+    String futureString = 'https://elpais.com/';
 
     // try {
     //   futureString = await BarcodeScanner.scan();
@@ -42,11 +53,22 @@ class _HomePageState extends State<HomePage> {
     //   futureString = e.toString();
     // }
 
-    // print('Future String: $futureString');
+    if (futureString != null) {
+      final scan = ScanModel(valor: futureString);
+      // DBProvider.db.nuevoScan(scan);
+      scansBloc.agregarScan(scan);
 
-    // if (futureString != null) {
-    //   print('escaner activado');
-    // }
+      final scan2 =
+          ScanModel(valor: 'geo:40.9675894857348467,-74.827364758692175');
+      // DBProvider.db.nuevoScan(scan);
+      scansBloc.agregarScan(scan2);
+      if (Platform.isIOS) {
+        Future.delayed(Duration(milliseconds: 750), () {
+          utils.abrirScan(scan);
+        });
+      }
+      utils.abrirScan(scan);
+    }
   }
 
   Widget _callPage(int paginaActual) {
