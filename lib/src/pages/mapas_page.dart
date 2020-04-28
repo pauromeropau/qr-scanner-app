@@ -8,6 +8,7 @@ class MapasPage extends StatelessWidget {
   final scansBloc = new ScansBloc();
   @override
   Widget build(BuildContext context) {
+    scansBloc.obtenerScans();
     return StreamBuilder<List<ScanModel>>(
       stream: scansBloc.scansStream,
       builder: (BuildContext context, AsyncSnapshot<List<ScanModel>> snapshot) {
@@ -19,7 +20,7 @@ class MapasPage extends StatelessWidget {
         final scans = snapshot.data;
         if (scans.length == 0) {
           return Center(
-            child: Text('No hay información'),
+            child: Text('Nothing saved.'),
           );
         }
         return ListView.builder(
@@ -30,15 +31,16 @@ class MapasPage extends StatelessWidget {
             ),
             onDismissed: (direction) => scansBloc.borrarScan(scans[i].id),
             child: ListTile(
-              leading: Icon(Icons.cloud_queue,
-                  color: Theme.of(context).accentColor, size: 40.0),
+              leading: Icon(Icons.cloud_done,
+                  color: Theme.of(context).accentColor, size: 25.0),
               title: Text(scans[i].valor),
-              subtitle: Text('id : ${scans[i].id}'),
+              // subtitle: Text('id : ${scans[i].id}'),
               trailing: Icon(
                 Icons.keyboard_arrow_right,
                 color: Theme.of(context).accentColor,
+                size: 35,
               ),
-              onTap: () => utils.abrirScan(scans[i]),
+              onTap: () => utils.abrirScan(context, scans[i]),
             ),
           ),
           itemCount: scans.length,

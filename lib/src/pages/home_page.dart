@@ -25,7 +25,11 @@ class _HomePageState extends State<HomePage> {
         title: Text('QR Scanner'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(
+              Icons.delete,
+              size: 30,
+              color: Colors.red,
+            ),
             onPressed: scansBloc.borrarScanTODOS,
           )
         ],
@@ -45,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _scanQR(BuildContext context) async {
-    String futureString = 'https://elpais.com/';
+    String futureString;
 
     // try {
     //   futureString = await BarcodeScanner.scan();
@@ -58,16 +62,16 @@ class _HomePageState extends State<HomePage> {
       // DBProvider.db.nuevoScan(scan);
       scansBloc.agregarScan(scan);
 
-      final scan2 =
-          ScanModel(valor: 'geo:40.9675894857348467,-74.827364758692175');
-      // DBProvider.db.nuevoScan(scan);
-      scansBloc.agregarScan(scan2);
+      // final scan2 =
+      //     ScanModel(valor: 'geo:40.9675894857348467,-74.827364758692175');
+      // scansBloc.agregarScan(scan2);
+
       if (Platform.isIOS) {
         Future.delayed(Duration(milliseconds: 750), () {
-          utils.abrirScan(scan);
+          utils.abrirScan(context, scan);
         });
       }
-      utils.abrirScan(scan);
+      utils.abrirScan(context, scan);
     }
   }
 
@@ -91,9 +95,9 @@ class _HomePageState extends State<HomePage> {
         });
       },
       items: [
-        BottomNavigationBarItem(icon: Icon(Icons.map), title: Text('Map')),
         BottomNavigationBarItem(
-            icon: Icon(Icons.directions), title: Text('Direcciones'))
+            icon: Icon(Icons.map), title: Text('Locations')),
+        BottomNavigationBarItem(icon: Icon(Icons.public), title: Text('Web'))
       ],
     );
   }
