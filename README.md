@@ -11,11 +11,10 @@ A tool that scans QR codes. Both web links and maps (geolocation).
 - Open URLs
 - etc.
 
-![](https://media.giphy.com/media/SsORDZYZYbLDfwOsDG/giphy.gif)
 
+<img align="left" src="https://media.giphy.com/media/SsORDZYZYbLDfwOsDG/giphy.gif" width="300"/>
 
-![](https://media.giphy.com/media/XHdixrt7T59oZmsbw1/giphy.gif)
-
+<img align="center" src="https://media.giphy.com/media/XHdixrt7T59oZmsbw1/giphy.gif" width="300"/>
 
 
 
